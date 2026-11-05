@@ -1,5 +1,6 @@
 class Product:
     """Класс "Продукт", включает атрибуты: название, описание, цена и кол-во на складе"""
+
     name: str
     description: str
     price: float
@@ -15,6 +16,7 @@ class Product:
 class Category:
     """Класс "Категория товара", включает атрибуты: название, описание, список продуктов в категории, количество
     продуктов и количество самих категорий"""
+
     name: str
     description: str
     products: list[Product]
