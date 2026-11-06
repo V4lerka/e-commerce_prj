@@ -34,7 +34,7 @@ def do_objects_from_data(data: list) -> list[Any]:
                 for product in category["products"]:
                     product_list.append(Product(**product))
                 category["products"] = product_list
-            categories_list.append(Category(**category))
+                categories_list.append(Category(**category))
         return categories_list
     print("Данные отсутствуют")
     return []
