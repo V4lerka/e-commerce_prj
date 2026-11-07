@@ -1,4 +1,5 @@
-from src.main import Category
+from src.main import Category, Product
+from unittest.mock import patch
 
 
 def test_init_product(product_data1, product_data2, product_data3):
@@ -21,8 +22,68 @@ def test_init_category(category_data):
     assert category_data.description == (
         "Смартфоны, как средство не только коммуникации, но и получения дополнительных " "функций для удобства жизни"
     )
-    assert len(category_data.products) == 3
+    assert category_data.products == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n\
+Iphone 15, 210000.0 руб. Остаток: 8 шт.\n\
+Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
 
     assert Category.category_count == 1
     assert category_data.category_count == 1
     assert Category.product_count == 3
+
+
+def test_add_product(category_data, product_data1):
+    category_data.add_product(product_data1)
+    assert category_data.products == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n\
+Iphone 15, 210000.0 руб. Остаток: 8 шт.\n\
+Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n\
+Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
+
+
+def test_new_product(new_product_data):
+    """Тест, если продукта нет в списке"""
+    new_prod = Product.new_product(new_product_data, [])
+    assert new_prod.name == "Iphone 18"
+    assert new_prod.description == "512GB, Red space"
+    assert new_prod.price == 210000.0
+    assert new_prod.quantity == 18
+
+
+def test_new_product2(product_data1, product_data2, product_data3, new_product_test_data):
+    """Тест, если продукт есть в списке, но у него другая цена"""
+    list_prods = [product_data1, product_data2, product_data3]
+    new_prod = Product.new_product(new_product_test_data, list_prods)
+    assert new_prod is None
+    assert product_data2.quantity == 26
+    assert product_data2.price == 250000.0
+
+
+def test_price_setter_higher(product_data1):
+    """Тест новой цены, выше прежней"""
+    assert product_data1.price == 180_000
+    product_data1.price = 210_000
+    assert product_data1.price == 210_000
+
+
+def test_price_setter_lower(product_data1):
+    """Тест новой цены ниже прежней"""
+    assert product_data1.price == 180_000
+    with patch("builtins.input", return_value="y"):
+        product_data1.price = 100_000
+    assert product_data1.price == 100_000
+
+
+def test_price_setter_lower2(product_data1):
+    """Тест новой цены ниже прежней"""
+    assert product_data1.price == 180_000
+    with patch("builtins.input", return_value="n"):
+        product_data1.price = 100_000
+    assert product_data1.price == 180_000
+
+
+def test_price_setter_zero(product_data1, capsys):
+    """Тест цены 0"""
+    assert product_data1.price == 180_000
+    product_data1.price = 0
+    assert product_data1.price == 180_000
+    captured = capsys.readouterr()
+    assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
