@@ -61,3 +61,13 @@ def test_data_utils():
             ],
         },
     ]
+
+
+@pytest.fixture
+def new_product_data():
+    return {"name": "Iphone 18", "description": "512GB, Red space", "price": 210000.0, "quantity": 18}
+
+
+@pytest.fixture()
+def new_product_test_data():
+    return {"name": "Iphone 15", "description": "512GB, Gray space", "price": 250000.0, "quantity": 18}

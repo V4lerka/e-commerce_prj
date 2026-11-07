@@ -72,7 +72,8 @@ if __name__ == "__main__":
             "description": "256GB, Серый цвет, 200MP камера",
             "price": 180000.0,
             "quantity": 5,
-        }, []
+        },
+        [],
     )
 
     print(new_product.name)
