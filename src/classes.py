@@ -40,8 +40,7 @@ class Product:
             user_agree = input("Подтверждаете снижение цены? (y/n):\n")
             if user_agree.lower().strip() == "y":
                 self.__price = new_value
-            else:
-                return
+            return
         self.__price = new_value
 
 
