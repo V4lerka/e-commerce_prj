@@ -17,7 +17,7 @@ class Product:
 
     def __add__(self, other):
         total_price = self.quantity * self.__price + other.quantity * other.price
-        return Product(f"Результат сложения товаров: {self.name} и {other.name}", "Сумма", total_price, 1)
+        return Product(f"Сумма: {self.name}+{other.name}", "Сумма", total_price, 1)
 
     @classmethod
     def new_product(cls, product_params: dict, list_products: list[Product]) -> Product | None:
@@ -89,14 +89,15 @@ class CategoryIterator:
 
     def __init__(self, category):
         self.category = category
+        self.index = 0
 
     def __iter__(self):
-        self.index = -1
         return self
 
     def __next__(self):
         list_prods = self.category.products.split("\n")
-        if self.index < len(list_prods) - 1:
+        if self.index < len(list_prods):
+            product = list_prods[self.index]
             self.index += 1
-            return list_prods[self.index]
+            return product
         raise StopIteration
