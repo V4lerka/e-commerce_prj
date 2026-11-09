@@ -1,5 +1,8 @@
-from src.main import Category, Product
 from unittest.mock import patch
+
+import pytest
+
+from src.main import Category, Product
 
 
 def test_init_product(product_data1, product_data2, product_data3):
@@ -87,3 +90,31 @@ def test_price_setter_zero(product_data1, capsys):
     assert product_data1.price == 180_000
     captured = capsys.readouterr()
     assert captured.out == "Цена не должна быть нулевая или отрицательная\n"
+
+
+def test_str_product(product_data1):
+    assert str(product_data1) == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
+
+
+def test_str_category(category_data):
+    assert str(category_data) == "Смартфоны, количество продуктов: 27 шт."
+
+
+def test_dunder_add(product_data1, product_data2, product_data3):
+    result1_2 = product_data1 + product_data2
+    result2_3 = product_data2 + product_data3
+    result_all = result1_2 + product_data3
+    assert result1_2.name == "Сумма: Samsung Galaxy S23 Ultra+Iphone 15"
+    assert result1_2.price == 2580000.0
+    assert result2_3.name == "Сумма: Iphone 15+Xiaomi Redmi Note 11"
+    assert result2_3.price == 2114000.0
+    assert result_all.price == 3014000.0
+
+
+def test_category_iterator(category_iterator):
+    assert category_iterator.index == 0
+    assert next(category_iterator) == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
+    assert next(category_iterator) == "Iphone 15, 210000.0 руб. Остаток: 8 шт."
+    assert next(category_iterator) == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
+    with pytest.raises(StopIteration):
+        next(category_iterator)

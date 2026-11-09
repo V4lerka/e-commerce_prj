@@ -1,5 +1,6 @@
 import pytest
 
+from src.classes import CategoryIterator
 from src.main import Category, Product
 
 
@@ -41,7 +42,8 @@ def test_data_utils():
     return [
         {
             "name": "Смартфоны",
-            "description": "Смартфоны, как средство не только коммуникации, но и получение дополнительных функций для удобства жизни",
+            "description": "Смартфоны, как средство не только коммуникации, но и получение дополнительных функций для \
+удобства жизни",
             "products": [
                 {
                     "name": "Samsung Galaxy C23 Ultra",
@@ -55,7 +57,8 @@ def test_data_utils():
         },
         {
             "name": "Телевизоры",
-            "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и помощником",
+            "description": "Современный телевизор, который позволяет наслаждаться просмотром, станет вашим другом и \
+помощником",
             "products": [
                 {"name": '55" QLED 4K', "description": "Фоновая подсветка", "price": 123000.0, "quantity": 7}
             ],
@@ -68,6 +71,11 @@ def new_product_data():
     return {"name": "Iphone 18", "description": "512GB, Red space", "price": 210000.0, "quantity": 18}
 
 
-@pytest.fixture()
+@pytest.fixture
 def new_product_test_data():
     return {"name": "Iphone 15", "description": "512GB, Gray space", "price": 250000.0, "quantity": 18}
+
+
+@pytest.fixture
+def category_iterator(category_data):
+    return CategoryIterator(category_data)

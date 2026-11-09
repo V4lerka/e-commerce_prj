@@ -12,6 +12,13 @@ class Product:
         self.__price = price
         self.quantity = quantity
 
+    def __str__(self):
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        total_price = self.quantity * self.__price + other.quantity * other.price
+        return Product(f"Сумма: {self.name}+{other.name}", "Сумма", total_price, 1)
+
     @classmethod
     def new_product(cls, product_params: dict, list_products: list[Product]) -> Product | None:
         """Класс-метод: принимает параметры товара в виде словаря, список имеющихся товаров класса "Продукт"
@@ -61,6 +68,10 @@ class Category:
         Category.category_count += 1
         Category.product_count += len(products)
 
+    def __str__(self):
+        total_amount = sum(product.quantity for product in self.__products)
+        return f"{self.name}, количество продуктов: {total_amount} шт."
+
     def add_product(self, product: Product) -> None:
         """Метод добавляет объект класса Product к списку товаров приватного атрибута __products"""
         self.__products.append(product)
@@ -69,7 +80,24 @@ class Category:
     @property
     def products(self) -> str:
         """Метод-геттер: выводит список товаров категории в виде строки"""
-        list_products = [
-            f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт." for product in self.__products
-        ]
-        return "\n".join(list_products)
+        list_prods = [str(product) for product in self.__products]
+        return "\n".join(list_prods)
+
+
+class CategoryIterator:
+    """Класс, с помощью которого можно будет перебирать все товары категории в цикле."""
+
+    def __init__(self, category):
+        self.category = category
+        self.index = 0
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        list_prods = self.category.products.split("\n")
+        if self.index < len(list_prods):
+            product = list_prods[self.index]
+            self.index += 1
+            return product
+        raise StopIteration
