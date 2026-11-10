@@ -104,9 +104,9 @@ def test_dunder_add(product_data1, product_data2, product_data3):
     result1_2 = product_data1 + product_data2
     result2_3 = product_data2 + product_data3
     result_all = result1_2 + product_data3
-    assert result1_2.name == "Сумма: Samsung Galaxy S23 Ultra+Iphone 15"
+    assert result1_2.name == "Samsung Galaxy S23 Ultra+Iphone 15"
     assert result1_2.price == 2580000.0
-    assert result2_3.name == "Сумма: Iphone 15+Xiaomi Redmi Note 11"
+    assert result2_3.name == "Iphone 15+Xiaomi Redmi Note 11"
     assert result2_3.price == 2114000.0
     assert result_all.price == 3014000.0
 
