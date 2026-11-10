@@ -46,8 +46,5 @@ if __name__ == "__main__":
     print(categories_data)
     print(categories_data[0].name)
     print(categories_data[1].name)
-    list_prods1 = categories_data[0].products
-    list_prods2 = categories_data[1].products
-    for i in range(3):
-        print(list_prods1[i].name)
-    print(list_prods2[0].name)
+    print(categories_data[0].products)
+    print(categories_data[1].products)

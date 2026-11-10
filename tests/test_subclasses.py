@@ -1,5 +1,6 @@
 import pytest
 
+
 def test_init_smartphone(smartphone1):
     """Тест инициализации подкласса Смартфоны"""
 
@@ -57,6 +58,7 @@ def test_add_lawn_grass_error(lawn_grass1):
 
     with pytest.raises(TypeError) as e:
         result = lawn_grass1 + 23
+        print(result)
     assert str(e.value) == "Можно складывать данные только одного класса"
 
 
@@ -65,4 +67,5 @@ def test_add_smartphone_error(smartphone1):
 
     with pytest.raises(TypeError) as e:
         result = smartphone1 + "Смартфон"
+        print(result)
     assert str(e.value) == "Можно складывать данные только одного класса"

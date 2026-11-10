@@ -45,7 +45,7 @@ Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
 def test_add_product_error(category_data):
     with pytest.raises(TypeError) as e:
         category_data.add_product("Товар категории Х")
-    assert str(e.value) ==  "Можно добавить только объект класса Продукт или дочернего класса"
+    assert str(e.value) == "Можно добавить только объект класса Продукт или дочернего класса"
 
 
 def test_new_product(new_product_data):
@@ -120,6 +120,7 @@ def test_dunder_add_ok(product_data1, product_data2, product_data3):
 def test_dunder_add_error(product_data1):
     with pytest.raises(TypeError):
         result = product_data1 + "Товар"
+        print(result)
 
 
 def test_category_iterator(category_iterator):
