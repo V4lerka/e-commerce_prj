@@ -1,3 +1,6 @@
+
+
+
 class Product:
     """Класс "Продукт", включает атрибуты: название, описание, цена и кол-во на складе"""
 
@@ -76,8 +79,11 @@ class Category:
 
     def add_product(self, product: Product) -> None:
         """Метод добавляет объект класса Product к списку товаров приватного атрибута __products"""
-        self.__products.append(product)
-        Category.product_count += 1
+        if isinstance(product, Product):
+            self.__products.append(product)
+            Category.product_count += 1
+        else:
+            raise TypeError
 
     @property
     def products(self) -> str:

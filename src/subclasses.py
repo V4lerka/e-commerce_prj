@@ -16,7 +16,7 @@ class Smartphone(Product):
             total_price = self.quantity * self.price + other.quantity * other.price
             return Smartphone(f"{self.name}+{other.name}", "Сумма", total_price, 1,
                               None, None, None, None)
-        raise TypeError
+        raise TypeError("Можно складывать данные только одного класса")
 
 
 class LawnGrass(Product):
@@ -34,4 +34,4 @@ class LawnGrass(Product):
             total_price = self.quantity * self.price + other.quantity * other.price
             return LawnGrass(f"{self.name}+{other.name}", "Сумма", total_price, 1,
                           None, None, None)
-        raise TypeError
+        raise TypeError("Можно складывать данные только одного класса")
