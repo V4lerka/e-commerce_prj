@@ -34,12 +34,18 @@ Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
     assert Category.product_count == 3
 
 
-def test_add_product(category_data, product_data1):
+def test_add_product_ok(category_data, product_data1):
     category_data.add_product(product_data1)
     assert category_data.products == "Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт.\n\
 Iphone 15, 210000.0 руб. Остаток: 8 шт.\n\
 Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт.\n\
 Samsung Galaxy S23 Ultra, 180000.0 руб. Остаток: 5 шт."
+
+
+def test_add_product_error(category_data):
+    with pytest.raises(TypeError) as e:
+        category_data.add_product("Товар категории Х")
+    assert str(e.value) ==  "Можно добавить только объект класса Продукт или дочернего класса"
 
 
 def test_new_product(new_product_data):
@@ -100,7 +106,7 @@ def test_str_category(category_data):
     assert str(category_data) == "Смартфоны, количество продуктов: 27 шт."
 
 
-def test_dunder_add(product_data1, product_data2, product_data3):
+def test_dunder_add_ok(product_data1, product_data2, product_data3):
     result1_2 = product_data1 + product_data2
     result2_3 = product_data2 + product_data3
     result_all = result1_2 + product_data3
@@ -109,6 +115,11 @@ def test_dunder_add(product_data1, product_data2, product_data3):
     assert result2_3.name == "Iphone 15+Xiaomi Redmi Note 11"
     assert result2_3.price == 2114000.0
     assert result_all.price == 3014000.0
+
+
+def test_dunder_add_error(product_data1):
+    with pytest.raises(TypeError):
+        result = product_data1 + "Товар"
 
 
 def test_category_iterator(category_iterator):

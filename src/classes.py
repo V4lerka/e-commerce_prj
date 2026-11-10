@@ -83,7 +83,7 @@ class Category:
             self.__products.append(product)
             Category.product_count += 1
         else:
-            raise TypeError
+            raise TypeError("Можно добавить только объект класса Продукт или дочернего класса")
 
     @property
     def products(self) -> str:
