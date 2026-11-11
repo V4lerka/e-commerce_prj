@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from src.mixins import MixinPrinter
 
+
 class BaseProduct(ABC):
     """Абстрактный класс для Продукта"""
 
