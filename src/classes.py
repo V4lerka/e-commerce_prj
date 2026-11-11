@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from src.mixins import MixinPrinter
 
 
@@ -119,3 +120,25 @@ class CategoryIterator:
             self.index += 1
             return product
         raise StopIteration
+
+
+class Order:
+    """Класс «Заказ», в котором будет ссылка на то, какой товар был куплен, количество купленного товара, а также
+    итоговая стоимость"""
+
+    def __init__(self, product: Product, amount_ordered: int):
+        self.product = product
+        self.amount_ordered = amount_ordered
+        self.total_price = self.calculate_total_price()
+        self.product.quantity -= self.amount_ordered
+
+
+    def calculate_total_price(self):
+        return self.product.price * self.amount_ordered
+
+    def __str__(self):
+        return f"Заказ: {self.product.name} | Количество: {self.amount_ordered} шт. | Итоговая стоимость: {self.total_price} руб."
+
+
+
+
