@@ -132,13 +132,9 @@ class Order:
         self.total_price = self.calculate_total_price()
         self.product.quantity -= self.amount_ordered
 
-
     def calculate_total_price(self):
         return self.product.price * self.amount_ordered
 
     def __str__(self):
-        return f"Заказ: {self.product.name} | Количество: {self.amount_ordered} шт. | Итоговая стоимость: {self.total_price} руб."
-
-
-
-
+        return f"Заказ: {self.product.name} | Количество: {self.amount_ordered} шт. | \
+        Итоговая стоимость: {self.total_price} руб."
