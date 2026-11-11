@@ -1,4 +1,15 @@
-class Product:
+from abc import ABC, abstractmethod
+from src.mixins import MixinPrinter
+
+class BaseProduct(ABC):
+    """Абстрактный класс для Продукта"""
+
+    @abstractmethod
+    def __add__(self, other):
+        pass
+
+
+class Product(BaseProduct, MixinPrinter):
     """Класс "Продукт", включает атрибуты: название, описание, цена и кол-во на складе"""
 
     name: str
@@ -11,6 +22,7 @@ class Product:
         self.description = description
         self.__price = price
         self.quantity = quantity
+        super().__init__()
 
     def __str__(self):
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
