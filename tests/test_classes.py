@@ -2,7 +2,9 @@ from unittest.mock import patch
 
 import pytest
 
+from src.classes import BaseProduct
 from src.main import Category, Product
+from src.mixins import MixinPrinter
 
 
 def test_init_product(product_data1, product_data2, product_data3):
@@ -130,3 +132,15 @@ def test_category_iterator(category_iterator):
     assert next(category_iterator) == "Xiaomi Redmi Note 11, 31000.0 руб. Остаток: 14 шт."
     with pytest.raises(StopIteration):
         next(category_iterator)
+
+
+def test_product_is_subclass_base_class(product_data1, smartphone1):
+    """Проверка наследования базового класса BaseProduct"""
+    assert isinstance(product_data1, BaseProduct) is True
+    assert isinstance(smartphone1, BaseProduct) is True
+
+
+def test_product_is_subclass_mixin(product_data1, smartphone1):
+    """Проверка наследования миксин-класса"""
+    assert isinstance(product_data1, MixinPrinter) is True
+    assert isinstance(smartphone1, MixinPrinter) is True

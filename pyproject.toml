@@ -60,3 +60,7 @@ exclude = '''
   )/
 )
 '''
+[tool.coverage.run]
+omit = [
+    "src/main.py"
+]
