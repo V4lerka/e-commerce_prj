@@ -102,3 +102,26 @@ def smartphone2():
 @pytest.fixture
 def lawn_grass2():
     return LawnGrass("Газонная трава 2", "Выносливая трава", 450.0, 15, "США", "5 дней", "Темно-зеленый")
+
+
+@pytest.fixture
+def category_data2():
+    return Category("Смартфоны",
+"Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+[
+        Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", None, 5),
+        Product("Iphone 15", "512GB, Gray space", 210000.0, 8),
+        Product("Xiaomi Redmi Note 11", "1024GB, Синий", 31000.0, 14),
+        ],
+    )
+
+@pytest.fixture
+def category_data3():
+    return Category("Смартфоны",
+"Смартфоны, как средство не только коммуникации, но и получения дополнительных функций для удобства жизни",
+[
+        Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 120000, 5),
+        Product("Iphone 15", "512GB, Gray space", 210000.0, 8),
+        Product("Xiaomi Redmi Note 11", "1024GB, Синий", "31000.0", 14),
+        ],
+    )

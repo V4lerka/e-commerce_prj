@@ -23,7 +23,10 @@ class Product(BaseProduct, MixinPrinter):
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        else:
+            self.quantity = quantity
         super().__init__()
 
     def __str__(self):
@@ -101,6 +104,19 @@ class Category:
         """Метод-геттер: выводит список товаров категории в виде строки"""
         list_prods = [str(product) for product in self.__products]
         return "\n".join(list_prods)
+
+    def middle_price(self):
+        """Метод считает среднюю цену товаров в категории"""
+        try:
+            avg_price = sum([product.price if product.price else None for product in self.__products]) / len(self.__products)
+            return round(avg_price, 1)
+        except ZeroDivisionError:
+            print("Ошибка: расчет не возможен! Список товаров категории пуст")
+            return 0
+        except TypeError:
+            print("Ошибка: расчет не возможен! Для одного или нескольких товаров не указана цена \
+или неверный формат данных")
+            return 0
 
 
 class CategoryIterator:
