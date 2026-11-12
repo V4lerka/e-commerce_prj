@@ -2,7 +2,7 @@ from unittest.mock import patch
 
 import pytest
 
-from src.classes import BaseProduct
+from src.classes import BaseProduct, Order
 from src.main import Category, Product
 from src.mixins import MixinPrinter
 
@@ -20,6 +20,14 @@ def test_init_product(product_data1, product_data2, product_data3):
     assert product_data3.description == "1024GB, Синий"
     assert product_data3.price == 31000.0
     assert product_data3.quantity == 14
+
+
+def test_init_product_zero_quantity():
+    """Создание товара с нулевым количеством"""
+
+    with pytest.raises(ValueError) as e:
+        Product("Samsung Galaxy S23 Ultra", "256GB, Серый цвет, 200MP камера", 180000.0, 0)
+    assert str(e.value) == "Товар с нулевым количеством не может быть добавлен"
 
 
 def test_init_category(category_data):
@@ -144,3 +152,76 @@ def test_product_is_subclass_mixin(product_data1, smartphone1):
     """Проверка наследования миксин-класса"""
     assert isinstance(product_data1, MixinPrinter) is True
     assert isinstance(smartphone1, MixinPrinter) is True
+
+
+def test_middle_price_ok(category_data):
+    """Успешный тест функции"""
+    assert category_data.middle_price() == 140333.3
+
+
+def test_middle_price_empty(capsys):
+    """Тест с пустым списком"""
+    empty_cat = Category("Пустая категория", "Категория без продуктов", [])
+    assert empty_cat.middle_price() == 0
+    message = capsys.readouterr()
+    assert message.out == "Ошибка: расчет не возможен! Список товаров категории пуст\n"
+
+
+def test_middle_price_wrong_price(category_data2, capsys):
+    """Тест если цена не указана или ее формат неверный"""
+
+    assert category_data2.middle_price() == 0
+    message = capsys.readouterr()
+    assert message.out == "Ошибка: расчет не возможен! Для одного или нескольких товаров не указана цена \
+или неверный формат данных\n"
+
+
+def test_middle_price_wrong_price2(category_data3, capsys):
+    """Тест если цена не указана или ее формат неверный"""
+
+    assert category_data3.middle_price() == 0
+    message = capsys.readouterr()
+    assert message.out == "Ошибка: расчет не возможен! Для одного или нескольких товаров не указана цена \
+или неверный формат данных\n"
+
+
+def test_init_order(product_data1, capsys):
+    """Тест инициализации заказа при количестве 0"""
+
+    Order(product_data1, 0)
+    message = capsys.readouterr()
+    assert message.out.split("\n")[0] == "Количество товара не может быть отрицательным или нулевым."
+    assert message.out.split("\n")[1] == "Обработка добавления товара завершена."
+
+
+def test_init_order2(product_data1, capsys):
+    """Тест инициализации заказа при количестве большем, чем есть"""
+
+    Order(product_data1, 7)
+    message = capsys.readouterr()
+    assert message.out.split("\n")[0] == "Недостаточно товара 'Samsung Galaxy S23 Ultra'. Доступно: 5 шт."
+    assert message.out.split("\n")[1] == "Обработка добавления товара завершена."
+
+
+def test_init_order3(product_data1, capsys):
+    """Успешная инициализация заказа"""
+    assert product_data1.quantity == 5
+    Order(product_data1, 1)
+    product_data1.product = product_data1
+    product_data1.amount_ordered = 1
+    assert product_data1.product.quantity == 4
+    message = capsys.readouterr()
+    assert message.out.split("\n")[0] == "Товар успешно добавлен в заказ."
+    assert message.out.split("\n")[1] == "Обработка добавления товара завершена."
+
+
+def test_calculate_price_order(product_data1):
+    """Тест определения стоимости заказа"""
+    my_order = Order(product_data1, 1)
+    assert my_order.calculate_total_price() == 180000
+
+
+def test_str_order(product_data1):
+    """Тест вывода заказа"""
+    my_order = Order(product_data1, 1)
+    assert str(my_order) == "Заказ: Samsung Galaxy S23 Ultra | Количество: 1 шт. | Итоговая стоимость: 180000.0 руб."
