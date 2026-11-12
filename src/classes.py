@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+
 from src.exceptions import ZeroGoodException
 from src.mixins import MixinPrinter
 
@@ -108,7 +109,9 @@ class Category:
     def middle_price(self):
         """Метод считает среднюю цену товаров в категории"""
         try:
-            avg_price = sum([product.price if product.price else None for product in self.__products]) / len(self.__products)
+            avg_price = sum([product.price if product.price else None for product in self.__products]) / len(
+                self.__products
+            )
             return round(avg_price, 1)
         except ZeroDivisionError:
             print("Ошибка: расчет не возможен! Список товаров категории пуст")
@@ -160,7 +163,6 @@ class Order:
             print("Товар успешно добавлен в заказ.")
         finally:
             print("Обработка добавления товара завершена.")
-
 
     def calculate_total_price(self):
         return self.product.price * self.amount_ordered

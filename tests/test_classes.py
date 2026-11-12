@@ -2,10 +2,10 @@ from unittest.mock import patch
 
 import pytest
 
-from src.classes import BaseProduct
+from src.classes import BaseProduct, Order
 from src.main import Category, Product
 from src.mixins import MixinPrinter
-from src.classes import Order
+
 
 def test_init_product(product_data1, product_data2, product_data3):
     assert product_data1.name == "Samsung Galaxy S23 Ultra"
@@ -174,6 +174,7 @@ def test_middle_price_wrong_price(category_data2, capsys):
     message = capsys.readouterr()
     assert message.out == "Ошибка: расчет не возможен! Для одного или нескольких товаров не указана цена \
 или неверный формат данных\n"
+
 
 def test_middle_price_wrong_price2(category_data3, capsys):
     """Тест если цена не указана или ее формат неверный"""
