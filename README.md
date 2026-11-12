@@ -64,12 +64,12 @@ ___
 [[*к содержанию*⤴️]](#содержание)
 
 ## Тестирование🧑‍🦽‍➡️  
-| File               | statements | missing | excluded | coverage |
-|--------------------|------------|---------|----------|----------|
-| src\__init__.py    | 0          | 0       | 0        | 100 %    |
-| src\classes.py     | 88         | 8       | 0        | 91 %     |
-| src\mixins.py      | 5          | 0       | 0        | 100 %    |
-| src\main.py        | 82         | 79      | 0        | 4 %      |
-| src\subclasses.py  | 24         | 0       | 0        | 100 %    |
-| src\utils.py       | 41         | 7       | 0        | 83 %     |
-| **Total**          | **158**    | **15**  | **0**    | **91 %** |
+| File              | statements | missing | excluded | coverage |
+|-------------------|------------|---------|----------|----------|
+| src\__init__.py   | 0          | 0       | 0        | 100 %    |
+| src\classes.py    | 112        | 2       | 0        | 98 %     |
+| src\mixins.py     | 5          | 0       | 0        | 100 %    |
+| src\exceptions.py | 5          | 0       | 0        | 100 %    |
+| src\subclasses.py | 24         | 0       | 0        | 100 %    |
+| src\utils.py      | 41         | 7       | 0        | 83 %     |
+| **Total**         | **187**    | **9**   | **0**    | **95 %** |
