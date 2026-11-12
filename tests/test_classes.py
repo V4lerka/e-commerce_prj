@@ -184,28 +184,43 @@ def test_middle_price_wrong_price2(category_data3, capsys):
 или неверный формат данных\n"
 
 
-def test_init_order(product_data1):
+def test_init_order(product_data1, capsys):
     """Тест инициализации заказа при количестве 0"""
-    with pytest.raises(ValueError, match="Количество заказываемого товара не может быть отрицательным или нулевым"):
-        Order(product_data1, 0)
+
+    Order(product_data1, 0)
+    message = capsys.readouterr()
+    assert message.out.split("\n")[0] == "Количество товара не может быть отрицательным или нулевым."
+    assert message.out.split("\n")[1] == "Обработка добавления товара завершена."
 
 
-def test_init_order2(product_data1):
+def test_init_order2(product_data1, capsys):
     """Тест инициализации заказа при количестве большем, чем есть"""
-    with pytest.raises(ValueError, match="Недостаточно товара 'Samsung Galaxy S23 Ultra'. Доступно: 5 шт."):
-        Order(product_data1, 7)
+
+    Order(product_data1, 7)
+    message = capsys.readouterr()
+    assert message.out.split("\n")[0] == "Недостаточно товара 'Samsung Galaxy S23 Ultra'. Доступно: 5 шт."
+    assert message.out.split("\n")[1] == "Обработка добавления товара завершена."
 
 
-def test_init_order3(product_data1):
+def test_init_order3(product_data1, capsys):
     """Успешная инициализация заказа"""
     assert product_data1.quantity == 5
     Order(product_data1, 1)
     product_data1.product = product_data1
     product_data1.amount_ordered = 1
     assert product_data1.product.quantity == 4
+    message = capsys.readouterr()
+    assert message.out.split("\n")[0] == "Товар успешно добавлен в заказ."
+    assert message.out.split("\n")[1] == "Обработка добавления товара завершена."
 
 
 def test_calculate_price_order(product_data1):
     """Тест определения стоимости заказа"""
     my_order = Order(product_data1, 1)
     assert my_order.calculate_total_price() == 180000
+
+
+def test_str_order(product_data1):
+    """Тест вывода заказа"""
+    my_order = Order(product_data1, 1)
+    assert str(my_order) == "Заказ: Samsung Galaxy S23 Ultra | Количество: 1 шт. | Итоговая стоимость: 180000.0 руб."

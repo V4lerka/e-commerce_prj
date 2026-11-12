@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-
+from src.exceptions import ZeroGoodException
 from src.mixins import MixinPrinter
 
 
@@ -143,18 +143,28 @@ class Order:
     итоговая стоимость"""
 
     def __init__(self, product: Product, amount_ordered: int):
-        if amount_ordered <= 0:
-            raise ValueError(f"Количество заказываемого товара не может быть отрицательным или нулевым")
-        if product.quantity < amount_ordered:
-            raise ValueError(f"Недостаточно товара '{product.name}'. Доступно: {product.quantity} шт.")
-        self.product = product
-        self.amount_ordered = amount_ordered
-        self.total_price = self.calculate_total_price()
-        self.product.quantity -= self.amount_ordered
+        try:
+            if amount_ordered <= 0:
+                raise ZeroGoodException
+            if product.quantity < amount_ordered:
+                raise ValueError(f"Недостаточно товара '{product.name}'. Доступно: {product.quantity} шт.")
+        except ZeroGoodException as e:
+            print(e)
+        except ValueError as e:
+            print(e)
+        else:
+            self.product = product
+            self.amount_ordered = amount_ordered
+            self.total_price = self.calculate_total_price()
+            self.product.quantity -= self.amount_ordered
+            print("Товар успешно добавлен в заказ.")
+        finally:
+            print("Обработка добавления товара завершена.")
+
 
     def calculate_total_price(self):
         return self.product.price * self.amount_ordered
 
     def __str__(self):
         return f"Заказ: {self.product.name} | Количество: {self.amount_ordered} шт. | \
-        Итоговая стоимость: {self.total_price} руб."
+Итоговая стоимость: {self.total_price} руб."
