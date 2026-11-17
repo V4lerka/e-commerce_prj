@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+from src.exceptions import ZeroGoodException
 from src.mixins import MixinPrinter
 
 
@@ -23,7 +24,10 @@ class Product(BaseProduct, MixinPrinter):
         self.name = name
         self.description = description
         self.__price = price
-        self.quantity = quantity
+        if quantity == 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен")
+        else:
+            self.quantity = quantity
         super().__init__()
 
     def __str__(self):
@@ -102,6 +106,21 @@ class Category:
         list_prods = [str(product) for product in self.__products]
         return "\n".join(list_prods)
 
+    def middle_price(self):
+        """Метод считает среднюю цену товаров в категории"""
+        try:
+            avg_price = sum([product.price if product.price else None for product in self.__products]) / len(
+                self.__products
+            )
+            return round(avg_price, 1)
+        except ZeroDivisionError:
+            print("Ошибка: расчет не возможен! Список товаров категории пуст")
+            return 0
+        except TypeError:
+            print("Ошибка: расчет не возможен! Для одного или нескольких товаров не указана цена \
+или неверный формат данных")
+            return 0
+
 
 class CategoryIterator:
     """Класс, с помощью которого можно будет перебирать все товары категории в цикле."""
@@ -127,18 +146,27 @@ class Order:
     итоговая стоимость"""
 
     def __init__(self, product: Product, amount_ordered: int):
-        if amount_ordered <= 0:
-            raise ValueError(f"Количество заказываемого товара не может быть отрицательным или нулевым")
-        if product.quantity < amount_ordered:
-            raise ValueError(f"Недостаточно товара '{product.name}'. Доступно: {product.quantity} шт.")
-        self.product = product
-        self.amount_ordered = amount_ordered
-        self.total_price = self.calculate_total_price()
-        self.product.quantity -= self.amount_ordered
+        try:
+            if amount_ordered <= 0:
+                raise ZeroGoodException
+            if product.quantity < amount_ordered:
+                raise ValueError(f"Недостаточно товара '{product.name}'. Доступно: {product.quantity} шт.")
+        except ZeroGoodException as e:
+            print(e)
+        except ValueError as e:
+            print(e)
+        else:
+            self.product = product
+            self.amount_ordered = amount_ordered
+            self.total_price = self.calculate_total_price()
+            self.product.quantity -= self.amount_ordered
+            print("Товар успешно добавлен в заказ.")
+        finally:
+            print("Обработка добавления товара завершена.")
 
     def calculate_total_price(self):
         return self.product.price * self.amount_ordered
 
     def __str__(self):
         return f"Заказ: {self.product.name} | Количество: {self.amount_ordered} шт. | \
-        Итоговая стоимость: {self.total_price} руб."
+Итоговая стоимость: {self.total_price} руб."
